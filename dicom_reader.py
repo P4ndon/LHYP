@@ -2,6 +2,7 @@ from utils import get_logger
 import pydicom as dicom
 import numpy as np
 import os
+from pydicom.pixel_data_handlers.util import apply_modality_lut
 
 logger = get_logger(__name__)
 
@@ -31,7 +32,7 @@ class DCMreaderVM:
             if file.find('.dcm') != -1:
                 try:
                     temp_ds = dicom.dcmread(os.path.join(folder_name, file))
-                    images.append(temp_ds.pixel_array)
+                    images.append(apply_modality_lut(temp_ds.pixel_array, temp_ds))  #modality_lut
                     slice_locations.append(temp_ds.SliceLocation)
                     file_paths.append(os.path.join(folder_name, file))
                 except:
@@ -94,7 +95,12 @@ class DCMreaderVM:
                 logger.error('Wrong shape at {}'.format(file_paths[idx]))
 
     def get_image(self, slice, frame):
-        return self.dcm_images[slice, frame, :, :]
+        try:
+            return self.dcm_images[slice, frame, :, :]
+        except:
+            self.broken = True
+            #print('broken')
+            return
     
     def get_slicelocation(self, slice, frame):
         return self.dcm_slicelocations[slice, frame, 0]
