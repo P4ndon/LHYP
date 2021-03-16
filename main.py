@@ -18,14 +18,16 @@ def data2pickle(path_to_sample, output_folder):
         pickle.dump(patient, out)
         out.close()
 
+
+#d = os.path.dirname(__file__) #creating output folder, name: data
+#p = r'{}/data'.format(d)
+#try:
+#    os.makedirs(p)
+#except OSError:
+#    pass
+
+path_to_out = 'data' #output folder
 path_to_sample = 'sample' #input folder
-d = os.path.dirname(__file__) #creating output folder, name: data
-p = r'{}/data'.format(d)
-try:
-    os.makedirs(p)
-except OSError:
-    pass
-path_to_out = 'data'
 
 data2pickle(path_to_sample, path_to_out)
 
