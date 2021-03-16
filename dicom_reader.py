@@ -99,7 +99,6 @@ class DCMreaderVM:
             return self.dcm_images[slice, frame, :, :]
         except:
             self.broken = True
-            #print('broken')
             return
     
     def get_slicelocation(self, slice, frame):

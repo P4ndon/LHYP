@@ -18,7 +18,7 @@ def data_collector(path_to_sample, output_folder, pd):
         actual_patient = patient()
         actual_patient.studyID = folder_name
         actual_patient.dcm_sa = []
-        print(folder_name)
+        #print(folder_name)
 
         #collecting short axis dcm_sa
         if os.path.isdir(pjoin(path_to_sample, folder_name, 'sa')) == True and len(os.listdir(pjoin(path_to_sample, folder_name, 'sa', 'images'))) != 0 :                  
@@ -39,9 +39,9 @@ def data_collector(path_to_sample, output_folder, pd):
                         #cutting-out the noise
                         if len(actual_patient.dcm_sa) < 6 and isinstance(image, np.ndarray) == True:
                             cntrs = []
-                            #for mode in contours[slc][frm]:
-                            cntrs.append(contours[slc][frm])
-                            actual_patient.contours.append(contours[slc][frm])
+                            for mode in contours[slc][frm]:
+                                cntrs.append(contours[slc][frm][mode])
+                                actual_patient.contours.append(contours[slc][frm][mode])
                             
                             p1, p99 = np.percentile(image, (1, 99))
                             image[image < p1] = p1
