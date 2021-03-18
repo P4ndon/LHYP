@@ -18,6 +18,7 @@ def data_collector(path_to_sample, output_folder, pd):
         actual_patient = patient()
         actual_patient.studyID = folder_name
         actual_patient.dcm_sa = []
+        actual_patient.dcm_la = []
         #print(folder_name)
 
         #collecting short axis dcm_sa
@@ -62,15 +63,20 @@ def data_collector(path_to_sample, output_folder, pd):
                 #BMI [kg/m^2]
                 #height is not always available
                 vizsgalat = cr.volume_data["Study_description="].split()
-                if cr.volume_data["Patient_height"] == None and ('cm' in cr.volume_data["Study_description="]):
-                    height = float(cr.volume_data["Study_description="].split()[3])
+                height = None
+                if cr.volume_data["Patient_height"] == None and (len(cr.volume_data["Study_description="].split()) >=3):
+                    for idx, text in enumerate(cr.volume_data["Study_description="].split()):
+                        if text[0] =='1' or text[0] == '2':
+                            height = float(cr.volume_data["Study_description="].split()[idx])
                     actual_patient.height = height
+                    
                 elif 'cm' not in cr.volume_data["Study_description="] and cr.volume_data["Patient_height"] != None:
                     height = float(cr.volume_data["Patient_height"].split()[0].split('=')[1])
                     actual_patient.height = height
                 else:
                     height = None
                     actual_patient.height = height
+                
                 if height != None:
                     actual_patient.BMI = round(weight / (height/100 * height/100),2)
                 
@@ -98,6 +104,8 @@ def data_collector(path_to_sample, output_folder, pd):
                             temp_ds[temp_ds > p99] = p99
                             temp_ds = (temp_ds-np.amin(temp_ds))/(np.amax(temp_ds)-np.amin(temp_ds))*255 #rescaling
                             temp_ds = temp_ds.astype(np.uint8)
+                            #plt.imshow(temp_ds)
+                            #plt.show()
                             actual_patient.dcm_la.append(temp_ds)
 
                 pd.append(actual_patient)
