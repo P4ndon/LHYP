@@ -19,6 +19,7 @@ def data_collector(path_to_sample, output_folder, pd):
         actual_patient.studyID = folder_name
         actual_patient.dcm_sa = []
         actual_patient.dcm_la = []
+        actual_patient.contours = []
         #print(folder_name)
 
         #collecting short axis dcm_sa
