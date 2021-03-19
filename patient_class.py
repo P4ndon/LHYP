@@ -2,6 +2,7 @@ class patient:
         studyID = None
         dcm_sa = [] #6 dcm images
         dcm_la = [] #9 dcm images in order: 2, 4, LVOT
+        fov = []
         contours = []
         gender = None
         BMI = None

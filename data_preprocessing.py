@@ -53,6 +53,13 @@ def data_collector(path_to_sample, output_folder, pd):
                             #plt.show()
                             actual_patient.dcm_sa.append(image)
 
+                #Field of view
+                crd1 = float(cr.volume_data["Field_of_view="].split()[0].split('x')[0])
+                crd2 = float(cr.volume_data["Field_of_view="].split()[0].split('x')[1])
+                actual_patient.fov = []
+                actual_patient.fov.append(crd1)
+                actual_patient.fov.append(crd2)
+
                 #Patient_gender
                 actual_patient.gender = cr.volume_data["Patient_gender="].split('\n')[0]
 
